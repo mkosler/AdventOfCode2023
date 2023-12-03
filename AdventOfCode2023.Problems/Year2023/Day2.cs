@@ -13,32 +13,21 @@ public class Day2 : IProblem
       ["blue"] = 14
     };
 
-    var sum = 0;
-
-    foreach (var l in input.Where(x => !string.IsNullOrEmpty(x)))
-    {
-      var (id, turns) = GenerateGame(l);
-
-      if (IsGamePossible(turns, maximums)) sum += id;
-    }
+    var sum = input.Where(l => !string.IsNullOrEmpty(l))
+      .Select(GenerateGame)
+      .Where(g => IsGamePossible(g.Turns, maximums))
+      .Sum(x => x.Id);
 
     return $"{sum}";
   }
 
   public string Part2(IEnumerable<string> input)
   {
-    var sum = 0;
-
-    foreach (var l in input.Where(x => !string.IsNullOrEmpty(x)))
-    {
-      var (id, turns) = GenerateGame(l);
-
-      var maximums = _colors.Select(c => (Color: c, Max: turns.Select(t => t.ContainsKey(c) ? t[c] : 0).Max()));
-
-      var power = maximums.Aggregate(1, (acc, c) => acc * c.Max);
-
-      sum += power;
-    }
+    var sum = input.Where(l => !string.IsNullOrEmpty(l))
+      .Select(GenerateGame)
+      .Select(g => _colors.Select(c => g.Turns.Select(t => t.ContainsKey(c) ? t[c] : 0).Max()))
+      .Select(m => m.Aggregate(1, (acc, c) => acc * c))
+      .Sum();
 
     return $"{sum}";
   }
