@@ -1,4 +1,3 @@
-
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode2023.Problems.Year2023;
