@@ -1,5 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
-
 namespace AdventOfCode2023.Problems.Year2023;
 
 public class Day3 : IProblem
