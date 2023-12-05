@@ -46,24 +46,6 @@ public class Day5 : IProblem
     seedRanges = MapSeedRanges(maps["humidity-to-location"], seedRanges).ToList();
 
     return $"{seedRanges.Min(r => r.SeedStart)}";
-
-    // // foreach (var seed in initialSeeds)
-    // // {
-    // for (var i = 0; i < initialSeeds.Count; i += 2)
-    // {
-    //   for (var seed = initialSeeds[i]; seed < initialSeeds[i] + initialSeeds[i + 1]; seed++)
-    //   {
-    //     var soil = GetMappedDestinationValue(maps["seed-to-soil"], seed);
-    //     var fertilizer = GetMappedDestinationValue(maps["soil-to-fertilizer"], soil);
-    //     var water = GetMappedDestinationValue(maps["fertilizer-to-water"], fertilizer);
-    //     var light = GetMappedDestinationValue(maps["water-to-light"], water);
-    //     var temperature = GetMappedDestinationValue(maps["light-to-temperature"], light);
-    //     var humidity = GetMappedDestinationValue(maps["temperature-to-humidity"], temperature);
-    //     var location = GetMappedDestinationValue(maps["humidity-to-location"], humidity);
-
-    //     if (location < lowestLocation) lowestLocation = location;
-    //   }
-    // }
   }
 
   private static IEnumerable<long> GetInitialSeeds(IEnumerable<string> input)
