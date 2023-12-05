@@ -86,11 +86,6 @@ public class Day5 : IProblem
     return sourceValue;
   }
 
-  private static IEnumerable<(long SeedStart, long SeedRangeLength)> MapSeedRanges(IEnumerable<(long DestinationRangeStart, long SourceRangeStart, long RangeLength)> ranges, IEnumerable<(long SeedStart, long SeedRangeLength)> seedRanges)
-  {
-    return seedRanges.SelectMany(seedRange => MapSeedRange(ranges, seedRange));
-  }
-
   private static IEnumerable<(long SeedStart, long SeedRangeLength)> MapSeedRange(IEnumerable<(long DestinationRangeStart, long SourceRangeStart, long RangeLength)> ranges, (long SeedStart, long SeedRangeLength) seedRange)
   {
     var newSeedRanges = new List<(long SeedStart, long SeedRangeLength)>();
