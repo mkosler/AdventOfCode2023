@@ -17,19 +17,9 @@ public class Day5 : IProblem
   {
     var initialSeeds = GetInitialSeeds(input);
     var maps = HEADERS.ToDictionary(h => h, h => GetMappingSection(input, h));
-    var lowestLocation = long.MaxValue;
-
-    foreach (var seed in initialSeeds)
-    {
-      var location = seed;
-
-      foreach (var header in HEADERS)
-      {
-        location = GetMappedDestinationValue(maps[header], location);
-      }
-
-      if (location < lowestLocation) lowestLocation = location;
-    }
+    var lowestLocation = initialSeeds
+      .Select(s => HEADERS.Aggregate(s, (acc, c) => GetMappedDestinationValue(maps[c], acc)))
+      .Min();
 
     return $"{lowestLocation}";
   }
@@ -73,17 +63,11 @@ public class Day5 : IProblem
 
   private static long GetMappedDestinationValue(IEnumerable<(long DestinationRangeStart, long SourceRangeStart, long RangeLength)> ranges, long sourceValue)
   {
-    foreach (var (DestinationRangeStart, SourceRangeStart, RangeLength) in ranges)
-    {
-      if (SourceRangeStart <= sourceValue && sourceValue < SourceRangeStart + RangeLength)
-      {
-        var diff = sourceValue - SourceRangeStart;
+    if (!ranges.Any(r => r.SourceRangeStart <= sourceValue && sourceValue < r.SourceRangeStart + r.RangeLength)) return sourceValue;
 
-        return DestinationRangeStart + diff;
-      }
-    }
+    var (DestinationRangeStart, SourceRangeStart, RangeLength) = ranges.First(r => r.SourceRangeStart <= sourceValue && sourceValue < r.SourceRangeStart + r.RangeLength);
 
-    return sourceValue;
+    return sourceValue + (DestinationRangeStart - SourceRangeStart);
   }
 
   private static IEnumerable<(long SeedStart, long SeedRangeLength)> MapSeedRange(IEnumerable<(long DestinationRangeStart, long SourceRangeStart, long RangeLength)> ranges, (long SeedStart, long SeedRangeLength) seedRange)
