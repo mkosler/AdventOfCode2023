@@ -1,3 +1,5 @@
+using AdventOfCode2023.Utility;
+
 namespace AdventOfCode2023.Problems.Year2023;
 
 public class Day5 : IProblem
@@ -26,14 +28,11 @@ public class Day5 : IProblem
 
   public string Part2(IEnumerable<string> input)
   {
-    var seedRanges = new List<(long SeedStart, long SeedRangeLength)>();
     var initialSeeds = GetInitialSeeds(input).ToList();
     var maps = HEADERS.ToDictionary(h => h, h => GetMappingSection(input, h));
-
-    for (var i = 0; i < initialSeeds.Count; i += 2)
-    {
-      seedRanges.Add((initialSeeds[i], initialSeeds[i + 1]));
-    }
+    var seedRanges = initialSeeds
+      .ToSequentialPairs()
+      .Cast<(long SeedStart, long SeedRangeLength)>();
 
     foreach (var header in HEADERS)
     {
