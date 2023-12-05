@@ -2,7 +2,16 @@ namespace AdventOfCode2023.Problems.Year2023;
 
 public class Day5 : IProblem
 {
-  private readonly string[] HEADERS = new string[]{ "seed-to-soil", "soil-to-fertilizer", "fertilizer-to-water", "water-to-light", "light-to-temperature", "temperature-to-humidity", "humidity-to-location" };
+  private readonly string[] HEADERS = new string[]
+  {
+    "seed-to-soil",
+    "soil-to-fertilizer",
+    "fertilizer-to-water",
+    "water-to-light",
+    "light-to-temperature",
+    "temperature-to-humidity",
+    "humidity-to-location"
+  };
 
   public string Part1(IEnumerable<string> input)
   {
@@ -12,13 +21,12 @@ public class Day5 : IProblem
 
     foreach (var seed in initialSeeds)
     {
-      var soil = GetMappedDestinationValue(maps["seed-to-soil"], seed);
-      var fertilizer = GetMappedDestinationValue(maps["soil-to-fertilizer"], soil);
-      var water = GetMappedDestinationValue(maps["fertilizer-to-water"], fertilizer);
-      var light = GetMappedDestinationValue(maps["water-to-light"], water);
-      var temperature = GetMappedDestinationValue(maps["light-to-temperature"], light);
-      var humidity = GetMappedDestinationValue(maps["temperature-to-humidity"], temperature);
-      var location = GetMappedDestinationValue(maps["humidity-to-location"], humidity);
+      var location = seed;
+
+      foreach (var header in HEADERS)
+      {
+        location = GetMappedDestinationValue(maps[header], location);
+      }
 
       if (location < lowestLocation) lowestLocation = location;
     }
@@ -37,13 +45,10 @@ public class Day5 : IProblem
       seedRanges.Add((initialSeeds[i], initialSeeds[i + 1]));
     }
 
-    seedRanges = MapSeedRanges(maps["seed-to-soil"], seedRanges).ToList();
-    seedRanges = MapSeedRanges(maps["soil-to-fertilizer"], seedRanges).ToList();
-    seedRanges = MapSeedRanges(maps["fertilizer-to-water"], seedRanges).ToList();
-    seedRanges = MapSeedRanges(maps["water-to-light"], seedRanges).ToList();
-    seedRanges = MapSeedRanges(maps["light-to-temperature"], seedRanges).ToList();
-    seedRanges = MapSeedRanges(maps["temperature-to-humidity"], seedRanges).ToList();
-    seedRanges = MapSeedRanges(maps["humidity-to-location"], seedRanges).ToList();
+    foreach (var header in HEADERS)
+    {
+      seedRanges = seedRanges.SelectMany(sr => MapSeedRange(maps[header], sr)).ToList();
+    }
 
     return $"{seedRanges.Min(r => r.SeedStart)}";
   }
@@ -83,14 +88,7 @@ public class Day5 : IProblem
 
   private static IEnumerable<(long SeedStart, long SeedRangeLength)> MapSeedRanges(IEnumerable<(long DestinationRangeStart, long SourceRangeStart, long RangeLength)> ranges, IEnumerable<(long SeedStart, long SeedRangeLength)> seedRanges)
   {
-    var newSeedRanges = new List<(long SeedStart, long SeedRangeLength)>();
-
-    foreach (var seedRange in seedRanges)
-    {
-      newSeedRanges.AddRange(MapSeedRange(ranges, seedRange));
-    }
-
-    return newSeedRanges;
+    return seedRanges.SelectMany(seedRange => MapSeedRange(ranges, seedRange));
   }
 
   private static IEnumerable<(long SeedStart, long SeedRangeLength)> MapSeedRange(IEnumerable<(long DestinationRangeStart, long SourceRangeStart, long RangeLength)> ranges, (long SeedStart, long SeedRangeLength) seedRange)
