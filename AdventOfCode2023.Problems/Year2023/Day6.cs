@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using AdventOfCode2023.Utility;
 
 namespace AdventOfCode2023.Problems.Year2023;
@@ -6,8 +7,8 @@ public class Day6 : IProblem
 {
   public string Part1(IEnumerable<string> input)
   {
-    var times = StringUtility.GetIntegersFromLine(input.First(), @"\s+").ToList();
-    var distances = StringUtility.GetIntegersFromLine(input.Where(l => !string.IsNullOrEmpty(l)).Last(), @"\s+").ToList();
+    var times = Regex.Matches(input.First(), @"\d+").Select(m => long.Parse(m.Value)).ToList();
+    var distances = Regex.Matches(input.Where(l => !string.IsNullOrEmpty(l)).Last(), @"\d+").Select(m => long.Parse(m.Value)).ToList();
     double product = 1;
 
     for (var i = 0; i < times.Count; i++)
@@ -20,8 +21,8 @@ public class Day6 : IProblem
 
   public string Part2(IEnumerable<string> input)
   {
-    var time = long.Parse(string.Join("", StringUtility.GetIntegersFromLine(input.First(), @"\s+").Select(x => $"{x}")));
-    var distance = long.Parse(string.Join("", StringUtility.GetIntegersFromLine(input.Where(l => !string.IsNullOrEmpty(l)).Last(), @"\s+").Select(x => $"{x}")));
+    var time = long.Parse(string.Join("", Regex.Matches(input.First(), @"\d+").Select(m => m.Value)));
+    var distance = long.Parse(string.Join("", Regex.Matches(input.Where(l => !string.IsNullOrEmpty(l)).Last(), @"\d+").Select(m => m.Value)));
 
     return $"{GetNumberOfWaysToWin(time, distance)}";
   }
