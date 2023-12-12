@@ -16,4 +16,21 @@ public static class MathUtility
       (front - sqrt) / twoa,
     };
   }
+
+  public static long GCD(long a, long b)
+  {
+    if (a == 0) return b;
+
+    return GCD(b % a, a);
+  }
+
+  public static long LCM(IList<int> elements, int index = 0)
+  {
+    if (index == elements.Count - 1) return elements[index];
+
+    var a = elements[index];
+    var b = LCM(elements, index + 1);
+
+    return a * b / GCD(a, b);
+  }
 }
