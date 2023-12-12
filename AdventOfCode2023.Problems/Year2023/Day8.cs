@@ -59,29 +59,6 @@ public class Day8 : IProblem
     }
 
     return $"{MathUtility.LCM(stepsToFirstZ)}";
-    // var locations = new HashSet<string>(map.Keys.Where(x => x.EndsWith("A")).ToList());
-    // var steps = 0;
-
-    // while (locations.Any(l => !l.EndsWith("Z")))
-    // {
-    //   var i = steps % instructions.Length;
-    //   var ch = instructions[i];
-    //   var newLocations = new HashSet<string>();
-
-    //   foreach (var loc in locations)
-    //   {
-    //     var (Left, Right) = map[loc];
-
-    //     if (ch == 'L') newLocations.Add(Left);
-    //     else if (ch == 'R') newLocations.Add(Right);
-    //     else throw new Exception("Que?");
-    //   }
-
-    //   locations = newLocations;
-    //   steps++;
-    // }
-
-    // return $"{steps}";
   }
 
   private static IDictionary<string, (string Left, string Right)> GenerateMap(IEnumerable<string> input)
