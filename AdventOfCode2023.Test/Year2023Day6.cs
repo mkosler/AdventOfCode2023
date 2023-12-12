@@ -55,5 +55,3 @@ public class Year2023Day6 : AdventOfCodeTestBase<Problems.Year2023.Day6>
     Assert.That(result, Is.EqualTo(20048741));
   }
 }
-
-
