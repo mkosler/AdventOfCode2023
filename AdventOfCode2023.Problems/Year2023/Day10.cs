@@ -102,31 +102,19 @@ public class Day10 : IProblem
     return false;
   }
 
-  private static bool ShouldRevert(char heldCh, char currentCh) => (heldCh == 'F' && currentCh == '7') || (heldCh == 'L' && currentCh == 'J');
-
   private static bool IsInterior(IDictionary<(int X, int Y), (char Ch, List<(int X, int Y)> Directions)> map, ISet<(int X, int Y)> loop, int x, int y)
   {
     var currentPos = (X: x, Y: y);
     var currentCh = map[currentPos].Ch;
     var count = 0;
-    var heldCh = '.';
-    var (dx, dy) = (1, 0);
+    var (dx, dy) = (1, 1);
 
     // If we started on the loop, we are not interior.
     if (loop.Contains(currentPos)) return false;
 
     while (true)
     {
-      if (loop.Contains(currentPos) && "|FL".Contains(currentCh))
-      {
-        heldCh = currentCh;
-        count++;
-      }
-      else if (loop.Contains(currentPos) && ShouldRevert(heldCh, currentCh))
-      {
-        heldCh = '.';
-        count--;
-      }
+      if (loop.Contains(currentPos) && !"L7".Contains(currentCh)) count++;
 
       var nextPos = (X: currentPos.X + dx, Y: currentPos.Y + dy);
 
@@ -134,8 +122,6 @@ public class Day10 : IProblem
       currentPos = nextPos;
       currentCh = map[nextPos].Ch;
     }
-
-    if (loop.Contains(currentPos) && ShouldRevert(heldCh, currentCh)) count--;
 
     return count > 0 && count % 2 == 1;
   }
