@@ -1,4 +1,3 @@
-
 namespace AdventOfCode2023.Problems.Year2023;
 
 public class Day11 : IProblem
