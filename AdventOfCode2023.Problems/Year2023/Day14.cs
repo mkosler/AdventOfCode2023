@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using AdventOfCode2023.Utility;
 
 namespace AdventOfCode2023.Problems.Year2023;
@@ -7,9 +6,10 @@ public class Day14 : IProblem
 {
   public string Part1(IEnumerable<string> input)
   {
-    var rolled = Roll(input.Where(l => !string.IsNullOrEmpty(l))).RotateCounterclockwise().Select(x => string.Concat(x)).ToList();
+    var rolled = RollLeft(input.Where(l => !string.IsNullOrEmpty(l)).RotateClockwise())
+      .RotateCounterclockwise();
 
-    return $"{CalculateScore(rolled)}";
+    return $"{CalculateScore(rolled.ToList())}";
   }
 
   public string Part2(IEnumerable<string> input)
@@ -23,7 +23,7 @@ public class Day14 : IProblem
     {
       for (var i = 0; i < 4; i++)
       {
-        rolled = Roll(rolled);
+        rolled = RollLeft(rolled.RotateClockwise());
       }
 
       var pattern = string.Join(Environment.NewLine, rolled);
@@ -48,7 +48,7 @@ public class Day14 : IProblem
     return $"{otherScore}";
   }
 
-  private static int CalculateScore(IList<string> input)
+  private static int CalculateScore(IList<IEnumerable<char>> input)
   {
     var sum = 0;
 
@@ -60,13 +60,11 @@ public class Day14 : IProblem
     return sum;
   }
 
-  private static IEnumerable<string> Roll(IEnumerable<string> source)
+  private static IEnumerable<string> RollLeft(IEnumerable<IEnumerable<char>> source)
   {
     var rolled = new List<string>();
 
-    var columns = source.RotateClockwise();
-
-    foreach (var line in columns)
+    foreach (var line in source)
     {
       var full = "";
       var buffer = "";
