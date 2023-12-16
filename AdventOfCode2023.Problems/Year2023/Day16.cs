@@ -30,6 +30,7 @@ public class Day16 : IProblem
       maxEnergizedCount = new int[] { maxEnergizedCount, GetEnergizedCount(map, (0, y, RIGHT.DX, RIGHT.DY)), GetEnergizedCount(map, (width - 1, y, LEFT.DX, LEFT.DY))}.Max();
     }
 
+    // Vertical
     for (var x = 0; x < width; x++)
     {
       maxEnergizedCount = new int[] { maxEnergizedCount, GetEnergizedCount(map, (x, 0, UP.DX, UP.DY)), GetEnergizedCount(map, (x, height - 1, DOWN.DX, DOWN.DY))}.Max();
@@ -53,15 +54,14 @@ public class Day16 : IProblem
 
       if (map.ContainsKey(headPos) && !energizedTilesWithDirection.Contains(head))
       {
+        var tile = map[headPos];
+
         energizedTiles.Add(headPos);
         energizedTilesWithDirection.Add(head);
 
-        var delta = (head.DX, head.DY);
-        var tile = map[headPos];
-
-        foreach (var ndv in GetUpdatedVelocity(delta, tile))
+        foreach (var (DX, DY) in GetUpdatedVelocity((head.DX, head.DY), tile))
         {
-          heads.Enqueue((headPos.X + ndv.DX, headPos.Y + ndv.DY, ndv.DX, ndv.DY));
+          heads.Enqueue((headPos.X + DX, headPos.Y + DY, DX, DY));
         }
       }
     }
