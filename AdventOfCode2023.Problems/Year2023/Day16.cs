@@ -81,11 +81,11 @@ public class Day16 : IProblem
     }
     else if (tile == '\\')
     {
-      return new List<(int DX, int DY)> { (DX: delta.DY, DY: delta.DX) };
+      return new List<(int DX, int DY)> { (delta.DY, delta.DX) };
     }
     else if (tile == '/')
     {
-      return new List<(int DX, int DY)> { (DX: -delta.DY, DY: -delta.DX) };
+      return new List<(int DX, int DY)> { (-delta.DY, -delta.DX) };
     }
     else
     {
