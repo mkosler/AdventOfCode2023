@@ -81,19 +81,11 @@ public class Day16 : IProblem
     }
     else if (tile == '\\')
     {
-      if (delta == UP) return new List<(int DX, int DY)> { RIGHT };
-      else if (delta == DOWN) return new List<(int DX, int DY)> { LEFT };
-      else if (delta == LEFT) return new List<(int DX, int DY)> { DOWN };
-      else if (delta == RIGHT) return new List<(int DX, int DY)> { UP };
-      else throw new Exception("HUH");
+      return new List<(int DX, int DY)> { (DX: delta.DY, DY: delta.DX) };
     }
     else if (tile == '/')
     {
-      if (delta == UP) return new List<(int DX, int DY)> { LEFT };
-      else if (delta == DOWN) return new List<(int DX, int DY)> { RIGHT };
-      else if (delta == LEFT) return new List<(int DX, int DY)> { UP };
-      else if (delta == RIGHT) return new List<(int DX, int DY)> { DOWN };
-      else throw new Exception("HUH");
+      return new List<(int DX, int DY)> { (DX: -delta.DY, DY: -delta.DX) };
     }
     else
     {
