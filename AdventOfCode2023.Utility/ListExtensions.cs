@@ -18,17 +18,34 @@ public static class ListExtensions
     return pairedList;
   }
 
-  public static IDictionary<(int X, int Y), char> ToCharacterMap(this IList<string> input)
+  public static IDictionary<(int X, int Y), char> ToCharacterMap(this IList<string> source)
   {
     var map = new Dictionary<(int X, int Y), char>();
 
-    for (var y = 0; y < input.Count; y++)
+    for (var y = 0; y < source.Count; y++)
     {
-      var length = input[y].Length;
+      var length = source[y].Length;
 
       for (var x = 0; x < length; x++)
       {
-        map[(x, y)] = input[y][x];
+        map[(x, y)] = source[y][x];
+      }
+    }
+
+    return map;
+  }
+
+  public static IDictionary<(int X, int Y), int> ToIntegerMap(this IList<string> source)
+  {
+    var map = new Dictionary<(int X, int Y), int>();
+
+    for (var y = 0; y < source.Count; y++)
+    {
+      var length = source[y].Length;
+
+      for (var x = 0; x < length; x++)
+      {
+        map[(x, y)] = int.Parse($"{source[y][x]}");
       }
     }
 
