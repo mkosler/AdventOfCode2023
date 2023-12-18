@@ -1,4 +1,3 @@
-using System.Reflection;
 using AdventOfCode2023.Utility;
 
 namespace AdventOfCode2023.Problems.Year2023;

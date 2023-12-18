@@ -4,7 +4,7 @@ namespace AdventOfCode2023.Test;
 [TestFixture, TestOf(typeof(Problems.Year2023.Day17))]
 public class Year2023Day17 : AdventOfCodeTestBase<Problems.Year2023.Day17>
 {
-  public Year2023Day17() : base(2023, 16)
+  public Year2023Day17() : base(2023, 17)
   {
   }
 
