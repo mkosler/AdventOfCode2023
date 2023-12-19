@@ -34,7 +34,7 @@ public class Day19 : IProblem
       while (true)
       {
         var lambda = Expression.Lambda<Func<int, int, int, int, string>>(wf, PARAMS.Values);
-        var val = lambda.Compile().Invoke(x, m, a, s);
+        var val = lambda.Compile()(x, m, a, s);
 
         if (val == "A")
         {
@@ -75,7 +75,6 @@ public class Day19 : IProblem
   private static Expression GenerateExpressionFromString(string s)
   {
     var exprs = new Stack<(Expression Condition, Expression IfTrue)>();
-    var returnLabel = Expression.Label(typeof(string));
 
     var pieces = s.Split(",");
 
@@ -84,7 +83,6 @@ public class Day19 : IProblem
       var match = Regex.Match(p, @"(\w+)([><])(\d+):(\w+)");
 
       var left = PARAMS[match.Groups[1].Value];
-      // var left = Expression.Parameter(typeof(int), match.Groups[1].Value);
       var right = Expression.Constant(int.Parse(match.Groups[3].Value));
       var condition = match.Groups[2].Value switch
       {
@@ -96,11 +94,10 @@ public class Day19 : IProblem
       exprs.Push((condition, Expression.Constant(match.Groups[4].Value)));
     }
 
-    Expression current = Expression.Return(returnLabel, Expression.Constant(pieces.Last()));
+    Expression current = Expression.Constant(pieces.Last());
 
-    // Maybe runs into reference nonsense?
-    while (exprs.TryPop(out var result)) current = Expression.IfThenElse(result.Condition, Expression.Return(returnLabel, result.IfTrue), current);
+    while (exprs.TryPop(out var result)) current = Expression.Condition(result.Condition, result.IfTrue, current);
 
-    return Expression.Block(current, Expression.Label(returnLabel, Expression.Constant("")));
+    return current;
   }
 }
